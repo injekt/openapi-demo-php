@@ -9,7 +9,7 @@ require_once(__DIR__ . "/api/Department.php");
 
 //get access token
 $accessToken = \api\Auth::getAccessToken();
-if ($accessToken != 0)
+if ($accessToken != null)
 {
     i("Success to get acess token: " . $accessToken);
     
