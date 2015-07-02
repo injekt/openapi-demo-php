@@ -1,12 +1,59 @@
 <?php
 
-$uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+require_once(__DIR__ . "/env.php");
+require_once(__DIR__ . "/util/Http.php");
 
-// This file allows us to emulate Apache's "mod_rewrite" functionality from the
-// built-in PHP web server. This provides a convenient way to test a Lumen
-// application without having installed a "real" server software here.
-if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
-    return false;
+require_once(__DIR__ . "/api/Auth.php");
+require_once(__DIR__ . "/api/Department.php");
+
+
+//get access token
+$accessToken = \api\Auth::getAccessToken();
+if ($accessToken != 0)
+{
+    i("Success to get acess token: " . $accessToken);
+    
+    $dept = array(
+        "name" => "TestDept.php6",
+        "parentid" => 1,
+        "order" => 1);
+
+    //create department
+    $departmentId = \api\Department::createDept($accessToken, $dept);
+    if ($departmentId != null)
+    {
+        i("Success to create department: id=" . $departmentId);
+        
+        //list departments
+        $list = \api\Department::listDept($accessToken);
+        if ($list != null)
+        {
+            i("Success to get list of departments: size=" . count($list));
+            // var_dump($list);
+        }
+        
+        //delete department
+        $isDeleted = \api\Department::deleteDept($accessToken, $departmentId);
+        if ($isDeleted)
+        {
+            i("Success to delete department: id=" . $departmentId);
+        }
+        else
+        {
+            i("Fail to delete department");
+        }
+    }
+    else
+    {
+        i("Fail to create department");
+    }
+}
+else{
+    i("Fail to get access token");
 }
 
-require_once __DIR__.'/public/index.php';
+
+function i($msg)
+{
+    echo $msg . "<br/>";
+}
