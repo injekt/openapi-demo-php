@@ -13,5 +13,5 @@ see jsapi.php and public/javascripts/demo.js
 see demo.js
 
 ### FAQ
-Q: {"message" : "权限校验失败", "errorCode" : 3}
-A: Make sure getCurrentUrl() in Auth.php returns the correct url
+* Q: {"message" : "权限校验失败", "errorCode" : 3}
+* A: Make sure getCurrentUrl() in Auth.php returns the correct url
