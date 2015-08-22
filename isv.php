@@ -14,13 +14,13 @@ i("getSuiteToken: " . json_encode($res));
 check($res);
 
 $suiteAccessToken = $res->suite_access_token;
-// $tmpAuthCode = "efdb4481eb51327ab00fedb386ed60c5";
-// $res = \api\Service::getPermanentCode($suiteAccessToken, $tmpAuthCode);
-// i("getPermanentCode: " . json_encode($res));
-// check($res, "getPermanentCode");
+$tmpAuthCode = "xxx";
+$res = \api\Service::getPermanentCode($suiteAccessToken, $tmpAuthCode);
+i("getPermanentCode: " . json_encode($res));
+check($res, "getPermanentCode");
 
-$permanetCode = "BkaTd2db5Myp6WWJrfu_Mk7EA2SXU8fg7jE77dT54xtbyFWCLhvjyGV0B3mXiI3v";
-$authCorpId = "dingd38ff512778355ce";
+$permanetCode = "xxx";
+$authCorpId = "xxx";
 $res = \api\Service::getCorpToken($suiteAccessToken, $authCorpId, $permanetCode);
 i("getCorpToken: " . json_encode($res));
 check($res);
@@ -29,7 +29,7 @@ $res = \api\Service::getAuthInfo($suiteAccessToken, $authCorpId, $permanetCode);
 i("getAuthInfo: " . json_encode($res));
 check($res);
 
-$agentId = "4319226";
+$agentId = "xxx";
 $res = \api\Service::getAgent($suiteAccessToken, $authCorpId, $permanetCode, $agentId);
 i("getAgent: " . json_encode($res));
 check($res);
