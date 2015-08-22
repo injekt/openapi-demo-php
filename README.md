@@ -13,7 +13,7 @@ see jsapi.php and public/javascripts/demo.js
 see demo.js
 
 ## ISV Callback API
-[open.dingtalk.com](http://open.dingtalk.com/#4-回调接口（分为三个回调类型）)
+<http://open.dingtalk.com/#4-回调接口（分为三个回调类型）>
 * suite ticket push
 * temporary auth code push
 * auth change event
@@ -21,7 +21,7 @@ see demo.js
 see receive.php
 
 ## ISV Service API
-[open.dingtalk.com](http://open.dingtalk.com/#5-获取套件访问token（suite_access_token）)
+<http://open.dingtalk.com/#5-获取套件访问token（suite_access_token）>
 
 see isv.php
 
