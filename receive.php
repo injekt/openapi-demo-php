@@ -13,6 +13,7 @@ $encrypt = json_decode($GLOBALS['HTTP_RAW_POST_DATA'])->encrypt;
 $crypt = new DingtalkCrypt(TOKEN, ENCODING_AES_KEY, SUITE_KEY);
 
 $msg = "";
+$res = "success";
 $errCode = $crypt->DecryptMsg($signature, $timeStamp, $nonce, $encrypt, $msg);
 if ($errCode == 0)
 {
@@ -31,6 +32,11 @@ if ($errCode == 0)
     {
         //handle auth change event
     }
+    else if ("check_update_suite_url" === $eventType)
+    {
+        $res = $eventMsg->Random;
+        $testSuiteKey = $eventMsg->TestSuiteKey;
+    }
     else
     {
         //should never happen
@@ -41,9 +47,8 @@ else
     Log::e(json_encode($_GET) . "  ERR:" . $errCode);
 }
 
-$plain = "success";
 $encryptMsg = "";
-$errCode = $crypt->EncryptMsg($plain, $timeStamp, $nonce, $encryptMsg);
+$errCode = $crypt->EncryptMsg($res, $timeStamp, $nonce, $encryptMsg);
 if ($errCode == 0) 
 {
     echo $encryptMsg;
