@@ -20,6 +20,10 @@ see demo.js
 
 see receive.php
 
+* create suite callback
+
+see create_suite_receive.php
+
 ## ISV Service API
 <http://open.dingtalk.com/#5-获取套件访问token（suite_access_token）>
 
