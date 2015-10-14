@@ -22,10 +22,14 @@ if ($errCode == 0)
     if ("suite_ticket" === $eventType)
     {
         Cache::setSuiteTicket($eventMsg->SuiteTicket);
+        
+        $info = $_GET;
+        $info["encrypt"] = $encrypt;
+        Cache::set("ticket_info", json_encode($info));
     }
     else if ("tmp_auth_code" === $eventType)
     {
-        //handle temporary auth code
+        Cache::setTmpAuthCode(json_encode($eventMsg));
     }
     else if ("change_auth" === $eventType)
     {
