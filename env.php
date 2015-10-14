@@ -10,5 +10,5 @@ define("SECRET", "");
 define("CREATE_SUITE_KEY", "suite4xxxxxxxxxxxxxxx");
 define("SUITE_KEY", "");
 define("SUITE_SECRET", "");
-define("TOKEN", "");
+define("TOKEN", "12345");
 define("ENCODING_AES_KEY", "");

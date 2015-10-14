@@ -4,6 +4,8 @@
 
 logger.i('Here we go...');
 
+logger.i(location.href);
+
 /**
  * _config comes from server-side template. see views/index.jade
  */
@@ -56,7 +58,7 @@ dd.ready(function() {
             });
         },
         onFail: function (err) {
-            logger.e('fail: ' + JSON.stringify(err));
+            logger.e('requestAuthCode fail: ' + JSON.stringify(err));
         }
     });
 });
