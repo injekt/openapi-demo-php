@@ -14,7 +14,11 @@ class Log
     
     private static function write($level, $msg)
     {
-        $logFile = fopen("log/test.log", "aw");
+        $logDir = "log";
+        if (!file_exists($logDir)) {
+    	    mkdir($logDir);
+    	}
+        $logFile = fopen($logDir . "/test.log", "aw");
         fwrite($logFile, $level . "/" . date(" Y-m-d h:i:s") . "  " . $msg . "\n");
         fclose($logFile);    
     }

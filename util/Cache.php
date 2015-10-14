@@ -52,10 +52,15 @@ class Cache
     
     private static function getMemcache()
     {
-        $memcache = new Memcache; 
-        $memcache->connect('localhost', 11211) or die ("Could not connect");
-        
-        return $memcache;
+        // if (class_exists("Memcache"))
+        // {
+        //     $memcache = new Memcache; 
+        //     if ($memcache->connect('localhost', 11211))
+        //     {
+        //         return $memcache;   
+        //     }
+        // }
+        return new FileCache;
     }
     
     public static function get($key)
@@ -67,4 +72,57 @@ class Cache
     {
         self::getMemcache()->set($key, $value);
     }
+}
+
+class FileCache
+{
+	var $filedir = "tmp";
+	var $filename = "tmp/cache";
+	
+	function set($key, $value)
+	{
+		$store = $this->r();
+		if ($store == "")
+		{
+			$store = "{}";
+		}
+		$values = (array)json_decode($store);
+		$values[$key] = $value;
+		$this->w(json_encode($values));
+	}
+	
+	function get($key)
+	{
+		$content = $this->r();
+    	if ($content == "")
+    	{
+    		w("{}");
+    		return "";
+    	}
+    	else{
+    		$obj = (array)json_decode($content);
+    		return $obj[$key];
+    	}
+	}
+	
+	function r()
+	{
+		if (!file_exists($this->filename)) {
+    		$this->w("{}");
+    	}
+		$handle = fopen($this->filename, "r");
+		$content = fread($handle, filesize ($this->filename));
+    	fclose($handle);
+    	return $content;
+	}
+	
+	function w($content)
+	{
+		if (!file_exists($this->filedir)) {
+    		mkdir($this->filedir);
+    	}
+        $handle = fopen($this->filename, "w");
+        fwrite($handle, $content);
+        fclose($handle); 
+	}
 }
