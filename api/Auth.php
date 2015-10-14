@@ -21,8 +21,8 @@ class Auth
     {
         $nonceStr = 'abcdefg';
         $timeStamp = time();
-        $url = self::getCurrentUrl();
-        // $url = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
+        // $url = self::getCurrentUrl();
+        $url = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
         
         $accessToken = self::getAccessToken();
         $ticket = self::getTicket($accessToken);
