@@ -12,7 +12,7 @@ require_once(__DIR__ . "/api/Auth.php");
         <!-- 在请求新的jsticket之后，旧的ticket会失效，导致旧ticket产生的signature失效。 -->
         <script type="text/javascript">var _config = <?php echo \api\Auth::getConfig();?>;</script>
         <script type="text/javascript" src="/public/javascripts/zepto.min.js"></script>
-        <script type="text/javascript" src="http://g.alicdn.com/ilw/ding/0.3.8/scripts/dingtalk.js"></script>
+        <script type="text/javascript" src="https://g.alicdn.com/ilw/ding/0.3.8/scripts/dingtalk.js"></script>
     </head>
     <body>
         <script type="text/javascript" src="/public/javascripts/logger.js"></script>
