@@ -2,18 +2,38 @@
 
 namespace api;
 
+require_once(__DIR__ . "/../util/Cache.php");
+
 class Auth
 {
     public static function getAccessToken()
     {
-        $response = \util\Http::get('/gettoken', array('corpid' => CORPID, 'corpsecret' => SECRET));
-        return $response->access_token;
+        /**
+         * 缓存accessToken。accessToken有效期为两小时，需要在失效前请求新的accessToken（注意：以下代码没有在失效前刷新缓存的accessToken）。
+         */
+        $accessToken = \util\Cache::get('access_token');
+        if ($accessToken == '')
+        {
+            $response = \util\Http::get('/gettoken', array('corpid' => CORPID, 'corpsecret' => SECRET));
+            $accessToken = $response->access_token;
+            \util\Cache::set('access_token', $accessToken);
+        }
+        return $accessToken;
     }
     
+     /**
+      * 缓存jsTicket。jsTicket有效期为两小时，需要在失效前请求新的jsTicket（注意：以下代码没有在失效前刷新缓存的jsTicket）。
+      */
     public static function getTicket($accessToken)
     {
-        $response = \util\Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
-        return $response->ticket;
+        $ticket = \util\Cache::get('js_ticket');
+        if ($ticket == '')
+        {
+            $response = \util\Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
+            $ticket = $response->ticket;
+            \util\Cache::set('js_ticket', $ticket);
+        }
+        return $ticket;
     }
     
     

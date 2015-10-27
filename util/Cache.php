@@ -1,5 +1,7 @@
 <?php
 
+namespace util;
+
 class Cache
 {
     public static function setSuiteTicket($ticket)
