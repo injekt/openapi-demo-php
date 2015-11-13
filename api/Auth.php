@@ -1,8 +1,8 @@
 <?php
 
-namespace api;
-
+require_once(__DIR__ . "/Service.php");
 require_once(__DIR__ . "/../util/Cache.php");
+require_once(__DIR__ . "/../util/Log.php");
 
 class Auth
 {
@@ -11,12 +11,12 @@ class Auth
         /**
          * 缓存accessToken。accessToken有效期为两小时，需要在失效前请求新的accessToken（注意：以下代码没有在失效前刷新缓存的accessToken）。
          */
-        $accessToken = \util\Cache::get('access_token');
+        $accessToken = Cache::get('corp_access_token');
         if ($accessToken == '')
         {
-            $response = \util\Http::get('/gettoken', array('corpid' => CORPID, 'corpsecret' => SECRET));
+            $response = Http::get('/gettoken', array('corpid' => CORPID, 'corpsecret' => SECRET));
             $accessToken = $response->access_token;
-            \util\Cache::set('access_token', $accessToken);
+            Cache::set('access_token', $accessToken);
         }
         return $accessToken;
     }
@@ -26,33 +26,38 @@ class Auth
       */
     public static function getTicket($accessToken)
     {
-        $ticket = \util\Cache::get('js_ticket');
-        if ($ticket == '')
+        $jsticket = Cache::getJsTicket();
+        if ($jsticket === "")
         {
-            $response = \util\Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
+            $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
+            self::check($response);
             $ticket = $response->ticket;
-            \util\Cache::set('js_ticket', $ticket);
+            Cache::setJsTicket($ticket);
         }
-        return $ticket;
+        return $jsticket;
     }
     
     
-    public static function getConfig()
+    public static function getConfig($corpId)
     {
         $nonceStr = 'abcdefg';
         $timeStamp = time();
         // $url = self::getCurrentUrl();
         $url = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
         
-        $accessToken = self::getAccessToken();
-        $ticket = self::getTicket($accessToken);
+        $corpAccessToken = Cache::getCorpAccessToken();
+        if (!$corpAccessToken)
+        {
+            Log::e("[getConfig] ERR: no corp access token");
+        }
+        $ticket = Service::getJsTicket($corpAccessToken);
         $signature = self::sign($ticket, $nonceStr, $timeStamp, $url);
         
         $config = array(
             'url' => $url,
             'nonceStr' => $nonceStr,
             'timeStamp' => $timeStamp,
-            'corpId' => CORPID,
+            'corpId' => $corpId,
             'signature' => $signature);
         return json_encode($config, JSON_UNESCAPED_SLASHES);
     }
@@ -86,5 +91,15 @@ class Auth
             $url .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
         }
         return $url;
+    }
+    
+    
+    static function check($res)
+    {
+        if ($res->errcode != 0)
+        {
+            Log.e("FAIL: " . json_encode($res));
+            exit("Failed: " . json_encode($res));
+        }
     }
 }

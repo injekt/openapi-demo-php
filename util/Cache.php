@@ -1,7 +1,5 @@
 <?php
 
-namespace util;
-
 class Cache
 {
     public static function setSuiteTicket($ticket)
@@ -16,34 +14,34 @@ class Cache
         return $memcache->get("suite_ticket");
     }
     
-    public static function setTmpAuthCode($code)
+    public static function setJsTicket($ticket)
     {
         $memcache = self::getMemcache();
-        $memcache->set("tmp_auth_code", $code);
+        $memcache->set("js_ticket", $ticket, 0, time() + 7000); // js ticket有效期为7200秒，这里设置为7000秒
     }
     
-    public static function getTmpAuthCode()
+    public static function getJsTicket()
     {
         $memcache = self::getMemcache();
-        return $memcache->get("tmp_auth_code");
+        return $memcache->get("js_ticket");
     }
     
-    public static function setPermanentAuthCode($code)
+    public static function setSuiteAccessToken($accessToken)
     {
         $memcache = self::getMemcache();
-        $memcache->set("permanent_auth_code", $code);
+        $memcache->set("suite_access_token", $accessToken, 0, time() + 7000); // suite access token有效期为7200秒，这里设置为7000秒
     }
     
-    public static function getPermanentAuthCode()
+    public static function getSuiteAccessToken()
     {
         $memcache = self::getMemcache();
-        return $memcache->get("permanent_auth_code");
+        return $memcache->get("suite_access_token");
     }
     
-    public static function setCorpAccessToken($token)
+    public static function setCorpAccessToken($accessToken)
     {
         $memcache = self::getMemcache();
-        $memcache->set("corp_access_token", $token);
+        $memcache->set("corp_access_token", $accessToken, 0, time() + 7000); // corp access token有效期为7200秒，这里设置为7000秒
     }
     
     public static function getCorpAccessToken()
@@ -52,17 +50,30 @@ class Cache
         return $memcache->get("corp_access_token");
     }
     
+    public static function setPermanentAuthCodeInfo($code)
+    {
+        $memcache = self::getMemcache();
+        $memcache->set("permanent_auth_code_info", $code);
+    }
+    
+    public static function getPermanentAuthCodeInfo()
+    {
+        $memcache = self::getMemcache();
+        return $memcache->get("permanent_auth_code_info");
+    }
+    
+    
     private static function getMemcache()
     {
-        // if (class_exists("Memcache"))
-        // {
-        //     $memcache = new Memcache; 
-        //     if ($memcache->connect('localhost', 11211))
-        //     {
-        //         return $memcache;   
-        //     }
-        // }
-        return new FileCache;
+        if (class_exists("Memcache"))
+        {
+            $memcache = new Memcache; 
+            if ($memcache->connect('localhost', 11211))
+            {
+                return $memcache;   
+            }
+        }
+        // return new FileCache;
     }
     
     public static function get($key)
@@ -76,6 +87,9 @@ class Cache
     }
 }
 
+/**
+ * fallbacks 
+ */
 class FileCache
 {
 	var $filedir = "tmp";

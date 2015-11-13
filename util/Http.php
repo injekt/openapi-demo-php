@@ -1,7 +1,6 @@
 <?php
 
-namespace util;
-
+require_once(__DIR__ . "/../env.php");
 require_once(__DIR__ . "/../vendor/nategood/httpful/bootstrap.php");
 
 Class Http
