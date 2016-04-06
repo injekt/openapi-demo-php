@@ -26,31 +26,32 @@ class Auth
       */
     public static function getTicket($accessToken)
     {
-        $jsticket = Cache::getJsTicket();
+        $jsticket = $_SESSION['js_ticket'];
         if ($jsticket === "")
         {
             $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
             self::check($response);
             $ticket = $response->ticket;
-            Cache::setJsTicket($ticket);
+            $_SESSION['js_ticket'] = $ticket;
         }
         return $jsticket;
     }
     
     
-    public static function getConfig($corpId)
+    public static function getConfig()
     {
+        $corpId = CORPID;
         $nonceStr = 'abcdefg';
         $timeStamp = time();
         // $url = self::getCurrentUrl();
         $url = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
         
-        $corpAccessToken = Cache::getCorpAccessToken();
+        $corpAccessToken = self::getAccessToken();
         if (!$corpAccessToken)
         {
             Log::e("[getConfig] ERR: no corp access token");
         }
-        $ticket = Service::getJsTicket($corpAccessToken);
+        $ticket = self::getJsTicket($corpAccessToken);
         $signature = self::sign($ticket, $nonceStr, $timeStamp, $url);
         
         $config = array(
