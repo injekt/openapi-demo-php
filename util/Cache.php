@@ -108,7 +108,7 @@ class FileCache
         if($key){
             $data = json_decode($this->get_file("filecache.php"),true);
             if($data&&array_key_exists($key,$data)){
-                if(!array_key_exists('expire_time',$data)||$data['expire_time'] > time()){
+                if(!array_key_exists('expire_time',$data)||$data['expire_time'] < time()){
                     return false;
                 }
 

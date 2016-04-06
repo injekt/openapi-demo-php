@@ -16,7 +16,7 @@ class Auth
         {
             $response = Http::get('/gettoken', array('corpid' => CORPID, 'corpsecret' => SECRET));
             $accessToken = $response->access_token;
-            Cache::set('access_token', $accessToken);
+            Cache::set('corp_access_token', $accessToken);
         }
         return $accessToken;
     }
