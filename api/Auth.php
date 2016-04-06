@@ -26,15 +26,15 @@ class Auth
       */
     public static function getTicket($accessToken)
     {
-        $jsticket = $_SESSION['js_ticket'];
+        $jsticket = Cache::getJsTicket('js_ticket');
         if ($jsticket === "")
         {
             $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
             self::check($response);
-            $ticket = $response->ticket;
-            $_SESSION['js_ticket'] = $ticket;
+            $jsticket = $response->ticket;
+            Cache::setJsTicket($jsticket);
         }
-        return $ticket;
+        return $jsticket;
     }
 
 
