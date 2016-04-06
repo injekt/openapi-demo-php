@@ -12,7 +12,7 @@ class Auth
          * 缓存accessToken。accessToken有效期为两小时，需要在失效前请求新的accessToken（注意：以下代码没有在失效前刷新缓存的accessToken）。
          */
         $accessToken = Cache::get('corp_access_token');
-        if ($accessToken == '')
+        if (!$accessToken)
         {
             $response = Http::get('/gettoken', array('corpid' => CORPID, 'corpsecret' => SECRET));
             $accessToken = $response->access_token;
@@ -27,7 +27,7 @@ class Auth
     public static function getTicket($accessToken)
     {
         $jsticket = Cache::getJsTicket('js_ticket');
-        if ($jsticket === "")
+        if (!$jsticket)
         {
             $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
             self::check($response);
