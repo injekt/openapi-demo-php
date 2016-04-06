@@ -2,8 +2,8 @@
 
 define("OAPI_HOST", "https://oapi.dingtalk.com");
 
-define("CORPID", "");
-define("SECRET", "");
+define("CORPID", "dingcc89897952f44d93");
+define("SECRET", "3zFyluBktC54268A8HneZYKV3hpnlVO2xi-L3J6WXcKIPeQhlqXkuQWw0ure78kX");
 
 
 //Suite
