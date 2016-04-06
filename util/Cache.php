@@ -106,7 +106,7 @@ class FileCache
 	{
         if($key){
             $data = json_decode($this->get_file("filecache.json"));
-            return $data[$key];
+            return $data->$key;
         }
 	}
 
