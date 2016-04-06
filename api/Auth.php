@@ -51,7 +51,7 @@ class Auth
         {
             Log::e("[getConfig] ERR: no corp access token");
         }
-        $ticket = self::getJsTicket($corpAccessToken);
+        $ticket = self::getTicket($corpAccessToken);
         $signature = self::sign($ticket, $nonceStr, $timeStamp, $url);
         
         $config = array(
