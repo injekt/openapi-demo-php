@@ -65,14 +65,14 @@ class Cache
     
     private static function getMemcache()
     {
-        /*if (class_exists("Memcache"))
+        if (class_exists("Memcache"))
         {
             $memcache = new Memcache; 
             if ($memcache->connect('localhost', 11211))
             {
                 return $memcache;   
             }
-        }*/
+        }
 
         return new FileCache;
     }
@@ -96,19 +96,19 @@ class FileCache
 	function set($key, $value)
 	{
         if($key&&$value){
-            $data = json_decode($this->get_file("filecache.json"),true);
+            $data = json_decode($this->get_file("filecache.php"),true);
             $data["$key"] = $value;
             $data['expire_time'] = time() + 7000;
-            $this->set_file("filecache.json",json_encode($data));
+            $this->set_file("filecache.php",json_encode($data));
         }
 	}
 	
 	function get($key)
 	{
         if($key){
-            $data = json_decode($this->get_file("filecache.json"),true);
+            $data = json_decode($this->get_file("filecache.php"),true);
             if($data&&array_key_exists($key,$data)){
-                if($data['expire_time'] > time()){
+                if(!array_key_exists('expire_time',$data)||$data['expire_time'] > time()){
                     return false;
                 }
 
@@ -121,13 +121,13 @@ class FileCache
 	}
 
     function get_file($filename) {
-        $content = file_get_contents($filename);
+        $content = trim(substr(file_get_contents($filename), 15));
         return $content;
     }
 
     function set_file($filename, $content) {
         $fp = fopen($filename, "w");
-        fwrite($fp, $content);
+        fwrite($fp, "<?php exit();?>" . $content);
         fclose($fp);
     }
 }

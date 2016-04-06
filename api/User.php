@@ -1,7 +1,4 @@
 <?php
-
-namespace api;
-
 class User
 {
     public static function getUserInfo($accessToken, $code)
