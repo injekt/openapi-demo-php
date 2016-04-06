@@ -98,6 +98,7 @@ class FileCache
         if($key&&$value){
             $data = json_decode($this->get_file("filecache.json"),true);
             $data["$key"] = $value;
+            $data['expire_time'] = time() + 7000;
             $this->set_file("filecache.json",json_encode($data));
         }
 	}
@@ -107,6 +108,10 @@ class FileCache
         if($key){
             $data = json_decode($this->get_file("filecache.json"),true);
             if($data&&array_key_exists($key,$data)){
+                if($data['expire_time'] > time()){
+                    return false;
+                }
+
                 return $data["$key"];
             }else{
                 return false;

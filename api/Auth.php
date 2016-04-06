@@ -42,7 +42,7 @@ class Auth
     {
         $pageURL = 'http';
 
-        if ($_SERVER["HTTPS"] == "on")
+        if (array_key_exists('HTTPS',$_SERVER)&&$_SERVER["HTTPS"] == "on")
         {
             $pageURL .= "s";
         }
@@ -65,9 +65,7 @@ class Auth
         $nonceStr = 'abcdefg';
         $timeStamp = time();
         $url = self::curPageURL();
-        error_log("---url----".$url);
         Cache::set("USER","LINING");
-        error_log("<<>>>>>>".Cache::get("USER"));
         $corpAccessToken = self::getAccessToken();
         if (!$corpAccessToken)
         {
