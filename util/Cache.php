@@ -96,28 +96,30 @@ class FileCache
 	function set($key, $value)
 	{
         if($key&&$value){
-            $data = json_decode($this->get_file("access_token.php"));
+            $data = json_decode($this->get_file("filecache.json"));
             $data[$key] = $value;
-            $this->set_file("access_token.php",json_encode($data));
+            $this->set_file("filecache.json",json_encode($data));
         }
 	}
 	
 	function get($key)
 	{
         if($key){
-            $data = json_decode($this->get_file("access_token.php"));
+            $data = json_decode($this->get_file("filecache.json"));
             error_log('$data[$key]---'.$data[$key]);
             return $data[$key];
         }
 	}
 
     function get_file($filename) {
-        return file_get_contents($filename);
+        $content = file_get_contents($filename);
+        error_log("----$content---".$content);
+        return $content;
     }
 
     function set_file($filename, $content) {
         $fp = fopen($filename, "w");
-        fwrite($fp, "<?php exit();?>" . $content);
+        fwrite($fp, $content);
         fclose($fp);
     }
 }
