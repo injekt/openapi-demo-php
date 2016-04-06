@@ -50,13 +50,13 @@ class Cache
         return $memcache->get("corp_access_token");
     }
     
-    public static function setPermanentAuthCodeInfo($code)
+    public static function setPermanentAuthCode($code)
     {
         $memcache = self::getMemcache();
         $memcache->set("permanent_auth_code_info", $code);
     }
     
-    public static function getPermanentAuthCodeInfo()
+    public static function getPermanentAuthCode()
     {
         $memcache = self::getMemcache();
         return $memcache->get("permanent_auth_code_info");

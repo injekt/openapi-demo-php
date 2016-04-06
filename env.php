@@ -9,5 +9,5 @@ define("SECRET", "3zFyluBktC54268A8HneZYKV3hpnlVO2xi-L3J6WXcKIPeQhlqXkuQWw0ure78
 define("CREATE_SUITE_KEY", "suite4xxxxxxxxxxxxxxx");
 define("SUITE_KEY", "");
 define("SUITE_SECRET", "");
-define("TOKEN", "12345");
-define("ENCODING_AES_KEY", "");
+define("TOKEN", "q1w2e3");
+define("ENCODING_AES_KEY", "chtv3r467zv0iffm5vmk6vrurj4kv1xi3d4sdy04s0e");
