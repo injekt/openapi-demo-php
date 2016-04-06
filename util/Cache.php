@@ -93,53 +93,30 @@ class Cache
  */
 class FileCache
 {
-	var $filedir = "tmp";
-	var $filename = "tmp/cache";
-	
 	function set($key, $value)
 	{
-		$store = $this->r();
-		if ($store == "")
-		{
-			$store = "{}";
-		}
-		$values = (array)json_decode($store);
-		$values[$key] = $value;
-		$this->w(json_encode($values));
+        if($key&&$value){
+            $data = json_decode($this->get_file("access_token.php"));
+            $data[$key] = $value;
+            $this->set_file("access_token.php",json_encode($data));
+        }
 	}
 	
 	function get($key)
 	{
-		$content = $this->r();
-    	if ($content == "")
-    	{
-    		w("{}");
-    		return "";
-    	}
-    	else{
-    		$obj = (array)json_decode($content);
-    		return $obj[$key];
-    	}
+        if($key){
+            $data = json_decode($this->get_file("access_token.php"));
+            return $data[$key];
+        }
 	}
-	
-	function r()
-	{
-		if (!file_exists($this->filename)) {
-    		$this->w("{}");
-    	}
-		$handle = fopen($this->filename, "r");
-		$content = fread($handle, filesize ($this->filename));
-    	fclose($handle);
-    	return $content;
-	}
-	
-	function w($content)
-	{
-		if (!file_exists($this->filedir)) {
-    		mkdir($this->filedir);
-    	}
-        $handle = fopen($this->filename, "w");
-        fwrite($handle, $content);
-        fclose($handle); 
-	}
+
+    function get_file($filename) {
+        return file_get_contents($filename);
+    }
+
+    function set_file($filename, $content) {
+        $fp = fopen($filename, "w");
+        fwrite($fp, "<?php exit();?>" . $content);
+        fclose($fp);
+    }
 }
