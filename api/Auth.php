@@ -44,8 +44,8 @@ class Auth
         $nonceStr = 'abcdefg';
         $timeStamp = time();
         // $url = self::getCurrentUrl();
-        $url = 'https://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
-        
+        $url = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
+        error_log($url);
         $corpAccessToken = self::getAccessToken();
         if (!$corpAccessToken)
         {
