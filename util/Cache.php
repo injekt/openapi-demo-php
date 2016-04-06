@@ -96,8 +96,8 @@ class FileCache
 	function set($key, $value)
 	{
         if($key&&$value){
-            $data = json_decode($this->get_file("filecache.json"));
-            $data->$key = $value;
+            $data = json_decode($this->get_file("filecache.json"),true);
+            $data["$key"] = $value;
             $this->set_file("filecache.json",json_encode($data));
         }
 	}
@@ -105,8 +105,13 @@ class FileCache
 	function get($key)
 	{
         if($key){
-            $data = json_decode($this->get_file("filecache.json"));
-            return $data->$key;
+            $data = json_decode($this->get_file("filecache.json"),true);
+            if($data&&array_key_exists($key,$data)){
+                return $data["$key"];
+            }else{
+                return false;
+            }
+
         }
 	}
 
