@@ -65,14 +65,14 @@ class Cache
     
     private static function getMemcache()
     {
-        if (class_exists("Memcache"))
+        /*if (class_exists("Memcache"))
         {
             $memcache = new Memcache; 
             if ($memcache->connect('localhost', 11211))
             {
                 return $memcache;   
             }
-        }
+        }*/
 
         return new FileCache;
     }
