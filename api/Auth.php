@@ -26,26 +26,48 @@ class Auth
       */
     public static function getTicket($accessToken)
     {
-        /*$jsticket = $_SESSION['js_ticket'];
+        $jsticket = $_SESSION['js_ticket'];
         if ($jsticket === "")
-        {*/
+        {
             $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
             self::check($response);
             $ticket = $response->ticket;
             $_SESSION['js_ticket'] = $ticket;
-        //}
+        }
         return $ticket;
     }
-    
-    
+
+
+    function curPageURL()
+    {
+        $pageURL = 'http';
+
+        if ($_SERVER["HTTPS"] == "on")
+        {
+            $pageURL .= "s";
+        }
+        $pageURL .= "://";
+
+        if ($_SERVER["SERVER_PORT"] != "80")
+        {
+            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+        }
+        else
+        {
+            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+        }
+        return $pageURL;
+    }
+
     public static function getConfig()
     {
         $corpId = CORPID;
         $nonceStr = 'abcdefg';
         $timeStamp = time();
-        // $url = self::getCurrentUrl();
-        $url = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
-        error_log($url);
+        $url = self::curPageURL();
+
+        Cache::set("USER","LINING");
+        error_log("<<>>>>>>".Cache::get("USER"));
         $corpAccessToken = self::getAccessToken();
         if (!$corpAccessToken)
         {
