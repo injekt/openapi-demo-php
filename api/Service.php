@@ -18,6 +18,13 @@ class Service
                     "suite_secret" => SUITE_SECRET,
                     "suite_ticket" => $suiteTicket    
                 )));
+            error_log("---------start-----------");
+            error_log(json_encode(array(
+                "suite_key" => SUITE_KEY,
+                "suite_secret" => SUITE_SECRET,
+                "suite_ticket" => $suiteTicket
+            )));
+            error_log("----------end----------");
             self::check($response);
             $suiteAccessToken = $response->suite_access_token;
             Cache::setSuiteAccessToken($suiteAccessToken);
