@@ -106,6 +106,7 @@ class FileCache
 	{
         if($key){
             $data = json_decode($this->get_file("access_token.php"));
+            error_log('$data[$key]---'.$data[$key]);
             return $data[$key];
         }
 	}

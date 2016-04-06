@@ -65,7 +65,7 @@ class Auth
         $nonceStr = 'abcdefg';
         $timeStamp = time();
         $url = self::curPageURL();
-
+        error_log("---url----".$url);
         Cache::set("USER","LINING");
         error_log("<<>>>>>>".Cache::get("USER"));
         $corpAccessToken = self::getAccessToken();
@@ -94,28 +94,6 @@ class Auth
             '&url=' . $url;
         return sha1($plain);
     }
-    
-    
-    private static function getCurrentUrl() 
-    {
-        $url = "http";
-        if ($_SERVER["HTTPS"] == "on") 
-        {
-            $url .= "s";
-        }
-        $url .= "://";
-    
-        if ($_SERVER["SERVER_PORT"] != "80") 
-        {
-            $url .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-        } 
-        else 
-        {
-            $url .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
-        }
-        return $url;
-    }
-    
     
     static function check($res)
     {
