@@ -97,7 +97,7 @@ class FileCache
 	{
         if($key&&$value){
             $data = json_decode($this->get_file("filecache.json"));
-            $data[$key] = $value;
+            $data->$key = $value;
             $this->set_file("filecache.json",json_encode($data));
         }
 	}
@@ -106,14 +106,12 @@ class FileCache
 	{
         if($key){
             $data = json_decode($this->get_file("filecache.json"));
-            error_log('$data[$key]---'.$data[$key]);
             return $data[$key];
         }
 	}
 
     function get_file($filename) {
         $content = file_get_contents($filename);
-        error_log("----$content---".$content);
         return $content;
     }
 
