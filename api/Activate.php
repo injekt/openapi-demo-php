@@ -11,6 +11,7 @@ class Activate
      */
     public static function autoActivateSuite($tmpAuthCode)
     {
+        $suiteTicket = Cache::get('suite_ticket');
         $suiteAccessToken = Service::getSuiteAccessToken($suiteTicket);
         Log::i("[Activate] getSuiteToken: " . $suiteAccessToken);
         
