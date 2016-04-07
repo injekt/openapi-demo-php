@@ -17,8 +17,8 @@ $suiteAccessToken = $res->suite_access_token;
 
 if (Cache::getPermanentAuthCode())
 {
-    $tmpAuthCode = json_decode(Cache::getTmpAuthCode())->AuthCode;
-    $res = Service::getPermanentCode($suiteAccessToken, $tmpAuthCode);
+    $tmpAuthCode = json_decode(Cache::getPermanentAuthCode())->AuthCode;
+    $res = Service::getPermanentCodeInfo($suiteAccessToken, $tmpAuthCode);
     i("getPermanentCode: " . json_encode($res));
     check($res, "getPermanentCode");
     
@@ -30,7 +30,7 @@ $permanetCode = $permanetCodeInfo->permanent_code;
 $authCorpId = $permanetCodeInfo->auth_corp_info->corpid;
 i("permanetCode: " . $permanetCode . ",  authCorpId: " . $authCorpId);
 
-$res = Service::getCorpToken($suiteAccessToken, $authCorpId, $permanetCode);
+$res = Service::getCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode);
 i("getCorpToken: " . json_encode($res));
 check($res);
 
