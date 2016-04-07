@@ -32,3 +32,15 @@ see isv.php
 ### FAQ
 * Q: {"message" : "权限校验失败", "errorCode" : 3}
 * A: Make sure getCurrentUrl() in Auth.php returns the correct url
+
+部署：
+1.下载代码
+2.修改env.php里面的配置
+如果是做微应用，必填：CORPID，SECRET，其他的可不填写
+如果是做isv应用，必填：CORPID，SECRET，CREATE_SUITE_KEY，SUITE_KEY，SUITE_SECRET，TOKEN，ENCODING_AES_KEY
+其中CORPID，SECRET在微应用设置的地方即可获取
+CREATE_SUITE_KEY：自己设置
+SUITE_KEY，SUITE_SECRET，TOKEN，ENCODING_AES_KEY等在阿里云开发者平台注册企业并获取，具体请详细阅读开发者平台api文档
+3.jsapi免登陆设置，在public/javascript/demo.js里面修改agentId为自己的agentId
+
+将项目部署在apache或者nginx下面即可访问

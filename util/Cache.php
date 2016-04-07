@@ -116,7 +116,7 @@ class FileCache
             }else{
                 $item['expire_time'] = 0;
             }
-
+            $item['create_time'] = time();
             $data["$key"] = $item;
             $this->set_file("filecache.php",json_encode($data));
         }
