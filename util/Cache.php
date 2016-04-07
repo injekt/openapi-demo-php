@@ -109,12 +109,19 @@ class FileCache
             $data = json_decode($this->get_file(DIR_ROOT ."filecache.php"),true);
             $item = array();
             $item["$key"] = $value;
-            $item['expire_time'] = time() + 7000;
+
+            $keyList = array('suite_access_token','js_ticket','corp_access_token');
+            if(in_array($key,$keyList)){
+                $item['expire_time'] = time() + 7000;
+            }else{
+                $item['expire_time'] = 0;
+            }
+
             $data["$key"] = $item;
             $this->set_file("filecache.php",json_encode($data));
         }
 	}
-	
+
 	function get($key)
 	{
         if($key){
@@ -124,7 +131,7 @@ class FileCache
                 if(!$item){
                     return false;
                 }
-                if($item['expire_time'] < time()){
+                if($item['expire_time']>0&&$item['expire_time'] < time()){
                     return false;
                 }
 
