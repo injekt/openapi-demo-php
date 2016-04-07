@@ -9,7 +9,7 @@ require_once(__DIR__ . "/api/Service.php");
 
 $suiteTicket = Cache::getSuiteTicket();
 i("suiteTicket: " . $suiteTicket);
-$res = Service::getSuiteToken($suiteTicket);
+$res = Service::getSuiteAccessToken($suiteTicket);
 i("getSuiteToken: " . json_encode($res));
 check($res);
 
