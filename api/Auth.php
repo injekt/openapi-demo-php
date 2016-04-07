@@ -97,7 +97,7 @@ class Auth
     {
         if ($res->errcode != 0)
         {
-            Log.e("FAIL: " . json_encode($res));
+            Log::e("FAIL: " . json_encode($res));
             exit("Failed: " . json_encode($res));
         }
     }
