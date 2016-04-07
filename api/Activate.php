@@ -11,6 +11,7 @@ class Activate
      */
     public static function autoActivateSuite($tmpAuthCode)
     {
+        Cache::setTmpAuthCode("tmpAuthCode",$tmpAuthCode);
         $suiteTicket = Cache::get('suite_ticket');
         $suiteAccessToken = Service::getSuiteAccessToken($suiteTicket);
         Log::i("[Activate] getSuiteToken: " . $suiteAccessToken);
@@ -18,7 +19,7 @@ class Activate
         /**
          * 企业永久授权码信息须持久化保持，在demo中只做缓存处理。
          */
-        $permanetCodeInfo = json_decode(Cache::getPermanentAuthCodeInfo());
+        $permanetCodeInfo = json_decode(Cache::getPermanentAuthCode());
         if (!$permanetCodeInfo)
         {
             $suiteTicket = Cache::getSuiteTicket();

@@ -49,7 +49,17 @@ class Cache
         $memcache = self::getMemcache();
         return $memcache->get("corp_access_token");
     }
-    
+
+    public static function setTmpAuthCode($tmpAuthCode){
+        $memcache = self::getMemcache();
+        $memcache->set("tmp_auth_code", $tmpAuthCode);
+    }
+
+    public static function getTmpAuthCode(){
+        $memcache = self::getMemcache();
+        $memcache->get("tmp_auth_code");
+    }
+
     public static function setPermanentAuthCode($code)
     {
         $memcache = self::getMemcache();
