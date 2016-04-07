@@ -13,7 +13,7 @@ $res = Service::getSuiteAccessToken($suiteTicket);
 i("getSuiteToken: " . json_encode($res));
 check($res);
 
-$suiteAccessToken = $res->suite_access_token;
+$suiteAccessToken = $res;
 
 if (!Cache::getPermanentAuthCode())
 {
