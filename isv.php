@@ -34,7 +34,7 @@ $res = Service::getCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode
 i("getCorpToken: " . json_encode($res));
 check($res);
 
-$corpAccessToken = $res->access_token;
+$corpAccessToken = $res;
 Cache::setCorpAccessToken($corpAccessToken);
 
 $res = Service::getAuthInfo($suiteAccessToken, $authCorpId, $permanetCode);
