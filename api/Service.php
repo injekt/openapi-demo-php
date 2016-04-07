@@ -50,7 +50,7 @@ class Service
      */
     public static function getPermanentCodeInfo($suiteAccessToken, $tmpAuthCode)
     {
-        $permanentCodeInfo = json_decode(Cache::getPermanentAuthCodeInfo());
+        $permanentCodeInfo = json_decode(Cache::getPermanentAuthCode());
         if (!$permanentCodeInfo)
         {
             $permanentCodeInfo = Http::post("/service/get_permanent_code", 
@@ -61,7 +61,7 @@ class Service
                     "tmp_auth_code" => $tmpAuthCode
                 )));
             self::check($permanentCodeInfo);
-            Cache::setPermanentAuthCodeInfo(json_encode($permanentCodeInfo));
+            Cache::setPermanentAuthCode(json_encode($permanentCodeInfo));
         }
         return $permanentCodeInfo;
     }
