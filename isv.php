@@ -17,7 +17,7 @@ $suiteAccessToken = $res;
 
 if (!Cache::getPermanentAuthCode())
 {
-    $tmpAuthCode = json_decode(Cache::getTmpAuthCode())->AuthCode;
+    $tmpAuthCode = Cache::getTmpAuthCode();
     $res = Service::getPermanentCodeInfo($suiteAccessToken, $tmpAuthCode);
     i("getPermanentCode: " . json_encode($res));
     check($res, "getPermanentCode");
