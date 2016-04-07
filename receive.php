@@ -80,6 +80,7 @@ else
     else if ("tmp_auth_code" === $eventType)
     {
         $tmpAuthCode = $eventMsg->AuthCode;
+        error_log("tmpAuthCode:".$tmpAuthCode);
         Activate::autoActivateSuite($tmpAuthCode);
     }
     /**
