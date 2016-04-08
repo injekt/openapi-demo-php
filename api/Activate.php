@@ -40,7 +40,7 @@ class Activate
         /**
          * 获取企业access token
          */
-        $corpAccessToken = Service::getCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode);
+        $corpAccessToken = Service::getIsvCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode);
         Log::i("[Activate] getCorpToken: " . $corpAccessToken);
         
         /**

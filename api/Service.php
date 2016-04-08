@@ -67,9 +67,9 @@ class Service
     }
     
     
-    public static function getCorpAccessToken($suiteAccessToken, $authCorpId, $permanentCode)
+    public static function getIsvCorpAccessToken($suiteAccessToken, $authCorpId, $permanentCode)
     {
-        $corpAccessToken = Cache::getCorpAccessToken();
+        $corpAccessToken = Cache::getIsvCorpAccessToken();
         if (!$corpAccessToken) 
         {
             $response = Http::post("/service/get_corp_token", 
@@ -82,7 +82,7 @@ class Service
                 )));
             self::check($response);
             $corpAccessToken = $response->access_token;
-            Cache::setCorpAccessToken($corpAccessToken);
+            Cache::setIsvCorpAccessToken($corpAccessToken);
         }
         return $corpAccessToken;
     }

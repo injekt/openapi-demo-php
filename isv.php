@@ -30,12 +30,12 @@ $permanetCode = $permanetCodeInfo->permanent_code;
 $authCorpId = $permanetCodeInfo->auth_corp_info->corpid;
 i("permanetCode: " . $permanetCode . ",  authCorpId: " . $authCorpId);
 
-$res = Service::getCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode);
+$res = Service::getIsvCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode);
 i("getCorpToken: " . json_encode($res));
 check($res);
 
 $corpAccessToken = $res;
-Cache::setCorpAccessToken($corpAccessToken);
+//Cache::setIsvCorpAccessToken($corpAccessToken);
 
 $res = Service::getAuthInfo($suiteAccessToken, $authCorpId, $permanetCode);
 i("getAuthInfo: " . json_encode($res));

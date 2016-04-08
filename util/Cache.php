@@ -50,6 +50,18 @@ class Cache
         return $memcache->get("corp_access_token");
     }
 
+    public static function setIsvCorpAccessToken($accessToken)
+    {
+        $memcache = self::getMemcache();
+        $memcache->set("isv_corp_access_token", $accessToken, 0, time() + 7000); // corp access token有效期为7200秒，这里设置为7000秒
+    }
+
+    public static function getIsvCorpAccessToken()
+    {
+        $memcache = self::getMemcache();
+        return $memcache->get("isv_corp_access_token");
+    }
+
     public static function setTmpAuthCode($tmpAuthCode){
         $memcache = self::getMemcache();
         $memcache->set("tmp_auth_code", $tmpAuthCode);
@@ -110,7 +122,7 @@ class FileCache
             $item = array();
             $item["$key"] = $value;
 
-            $keyList = array('suite_access_token','js_ticket','corp_access_token');
+            $keyList = array('isv_corp_access_token','suite_access_token','js_ticket','corp_access_token');
             if(in_array($key,$keyList)){
                 $item['expire_time'] = time() + 7000;
             }else{
