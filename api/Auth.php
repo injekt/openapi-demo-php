@@ -62,6 +62,7 @@ class Auth
     public static function getConfig()
     {
         $corpId = CORPID;
+        $agentId = AGENTID;
         $nonceStr = 'abcdefg';
         $timeStamp = time();
         $url = self::curPageURL();
@@ -77,6 +78,7 @@ class Auth
         $config = array(
             'url' => $url,
             'nonceStr' => $nonceStr,
+            'agentId' => $agentId,
             'timeStamp' => $timeStamp,
             'corpId' => $corpId,
             'signature' => $signature);

@@ -41,6 +41,5 @@ see isv.php
 其中CORPID，SECRET在微应用设置的地方即可获取
 CREATE_SUITE_KEY：自己设置
 SUITE_KEY，SUITE_SECRET，TOKEN，ENCODING_AES_KEY等在阿里云开发者平台注册企业并获取，具体请详细阅读开发者平台api文档
-3.jsapi免登陆设置，在public/javascript/demo.js里面修改agentId为自己的agentId
 
 将项目部署在apache或者nginx下面即可访问

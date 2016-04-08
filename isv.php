@@ -14,18 +14,16 @@ i("getSuiteToken: " . json_encode($res));
 check($res);
 
 $suiteAccessToken = $res;
-
-if (!Cache::getPermanentAuthCode())
+$permanetCodeInfo = Cache::getPermanentAuthCode();
+if (!$permanetCodeInfo)
 {
     $tmpAuthCode = Cache::getTmpAuthCode();
     $res = Service::getPermanentCodeInfo($suiteAccessToken, $tmpAuthCode);
     i("getPermanentCode: " . json_encode($res));
     check($res, "getPermanentCode");
-    
-    Cache::setPermanentAuthCode(json_encode($res));
 }
 
-$permanetCodeInfo = json_decode(Cache::getPermanentAuthCode());
+//$permanetCodeInfo = json_decode(Cache::getPermanentAuthCode());
 $permanetCode = $permanetCodeInfo->permanent_code;
 $authCorpId = $permanetCodeInfo->auth_corp_info->corpid;
 i("permanetCode: " . $permanetCode . ",  authCorpId: " . $authCorpId);

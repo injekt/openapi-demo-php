@@ -1,10 +1,11 @@
 <?php
-
+define('DIR_ROOT', dirname(__FILE__).'/');
 define("OAPI_HOST", "https://oapi.dingtalk.com");
 
 define("CORPID", "dingcc89897952f44d93");
 define("SECRET", "3zFyluBktC54268A8HneZYKV3hpnlVO2xi-L3J6WXcKIPeQhlqXkuQWw0ure78kX");
-define('DIR_ROOT', dirname(__FILE__).'/');
+define("AGENTID", "18249856");//必填，在创建微应用的时候会分配
+
 //Suite
 define("CREATE_SUITE_KEY", "suite4xxxxxxxxxxxxxxx");
 define("SUITE_KEY", "suitevdxzn0ulyn4w5fuq");
