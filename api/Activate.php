@@ -11,13 +11,15 @@ class Activate
      */
     public static function autoActivateSuite($tmpAuthCode)
     {
+        Cache::setTmpAuthCode($tmpAuthCode);
+        $suiteTicket = Cache::get('suite_ticket');
         $suiteAccessToken = Service::getSuiteAccessToken($suiteTicket);
         Log::i("[Activate] getSuiteToken: " . $suiteAccessToken);
         
         /**
          * 企业永久授权码信息须持久化保持，在demo中只做缓存处理。
          */
-        $permanetCodeInfo = json_decode(Cache::getPermanentAuthCodeInfo());
+        $permanetCodeInfo = json_decode(Cache::getPermanentAuthCode());
         if (!$permanetCodeInfo)
         {
             $suiteTicket = Cache::getSuiteTicket();
@@ -38,7 +40,7 @@ class Activate
         /**
          * 获取企业access token
          */
-        $corpAccessToken = Service::getCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode);
+        $corpAccessToken = Service::getIsvCorpAccessToken($suiteAccessToken, $authCorpId, $permanetCode);
         Log::i("[Activate] getCorpToken: " . $corpAccessToken);
         
         /**
