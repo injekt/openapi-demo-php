@@ -60,8 +60,8 @@ class DingtalkCrypt
 
 		$pc = new Prpcrypt($this->m_encodingAesKey);
 
-		if ($sTimeStamp == null) {
-			$sTimeStamp = time();
+		if ($timeStamp == null) {
+			$timeStamp = time();
 		}
 
 		$sha1 = new SHA1;

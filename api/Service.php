@@ -18,6 +18,13 @@ class Service
                     "suite_secret" => SUITE_SECRET,
                     "suite_ticket" => $suiteTicket    
                 )));
+            error_log("---------start-----------");
+            error_log(json_encode(array(
+                "suite_key" => SUITE_KEY,
+                "suite_secret" => SUITE_SECRET,
+                "suite_ticket" => $suiteTicket
+            )));
+            error_log("----------end----------");
             self::check($response);
             $suiteAccessToken = $response->suite_access_token;
             Cache::setSuiteAccessToken($suiteAccessToken);
@@ -43,7 +50,7 @@ class Service
      */
     public static function getPermanentCodeInfo($suiteAccessToken, $tmpAuthCode)
     {
-        $permanentCodeInfo = json_decode(Cache::getPermanentAuthCodeInfo());
+        $permanentCodeInfo = json_decode(Cache::getPermanentAuthCode());
         if (!$permanentCodeInfo)
         {
             $permanentCodeInfo = Http::post("/service/get_permanent_code", 
@@ -54,15 +61,15 @@ class Service
                     "tmp_auth_code" => $tmpAuthCode
                 )));
             self::check($permanentCodeInfo);
-            Cache::setPermanentAuthCodeInfo(json_encode($permanentCodeInfo));
+            Cache::setPermanentAuthCode(json_encode($permanentCodeInfo));
         }
         return $permanentCodeInfo;
     }
     
     
-    public static function getCorpAccessToken($suiteAccessToken, $authCorpId, $permanentCode)
+    public static function getIsvCorpAccessToken($suiteAccessToken, $authCorpId, $permanentCode)
     {
-        $corpAccessToken = Cache::getCorpAccessToken();
+        $corpAccessToken = Cache::getIsvCorpAccessToken();
         if (!$corpAccessToken) 
         {
             $response = Http::post("/service/get_corp_token", 
@@ -75,7 +82,7 @@ class Service
                 )));
             self::check($response);
             $corpAccessToken = $response->access_token;
-            Cache::setCorpAccessToken($corpAccessToken);
+            Cache::setIsvCorpAccessToken($corpAccessToken);
         }
         return $corpAccessToken;
     }
