@@ -156,7 +156,14 @@ class FileCache
 	}
 
     function get_file($filename) {
-        $content = trim(substr(file_get_contents($filename), 15));
+	if (!file_exists($filename)) {
+		$fp = fopen($filename, "w");
+        	fwrite($fp, "<?php exit();?>" . '');
+        	fclose($fp);
+		return false;
+	}else{
+        	$content = trim(substr(file_get_contents($filename), 15));
+	}
         return $content;
     }
 
