@@ -32,6 +32,7 @@ see isv.php
 ### FAQ
 * Q: {"message" : "权限校验失败", "errorCode" : 3}
 * A: Make sure getCurrentUrl() in Auth.php returns the correct url
+如果出现PHP Fatal error: Call to undefined function mcrypt_module_open()，就是没有安装mcrypt，记得检查是否安装mcrypt扩展
 
 部署：
 1.下载代码
