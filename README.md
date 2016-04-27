@@ -51,7 +51,7 @@ ISV应用注册开发流程
 2.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展）
 
 3.微应用主页地址填写。地址为`根目录/index.php`，(例如，工程部署在ip地址为123.56.71.118的主机上，端口为8080，那么微应用首页地址即为：`http://123.56.71.118:8080/index.php`，PC版首页地址为：`http://123.56.71.118:8080/indexpc.php`，假如你有域名的话，也可以把IP地址换成域名)
-  修改config.php中的CORPID，SECRET，AGENTID，其中CORPID，SECRET在微应用设置页面https://oa.dingtalk.com/#/microApp/microAppSet获取，AGENTID在创建微应用的时候可以获取
+  修改config.php中的CORPID，SECRET，AGENTID，其中CORPID，SECRET在微应用设置页面`https://oa.dingtalk.com/#/microApp/microAppSet`获取，AGENTID在创建微应用的时候可以获取
 
 4.微应用创建成功后，需要把微应用首页地址改为'根目录/index.php'
 
