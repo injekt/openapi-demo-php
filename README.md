@@ -1,46 +1,73 @@
-# open api demo (php ver.)
+ISV应用和企业应用php demo
 
-## Awesome project
+目录结构：
 
-### Getting started
-1. set up your own corp id and corp secret in env.php
-2. launch your server in your prayers
 
-### Jsapi authorization
-see jsapi.php and public/javascripts/demo.js
+isv目录：isv应用php demo
 
-### Get user infomation via auth code
-see demo.js
 
-## ISV Callback API
-<http://open.dingtalk.com/#4-回调接口（分为三个回调类型）>
-* suite ticket push
-* temporary auth code push
-* auth change event
+corp目录：企业应用php demo
 
-see receive.php
+运行前先看开发文档：http://ddtalk.github.io/dingTalkDoc/?spm=a3140.7785475.0.0.Q5c5r7
 
-* create suite callback
+## Getting Started
 
-see create_suite_receive.php
+ISV应用注册开发流程
+###创建套件前
+登录到 http://console.d.aliyun.com/#/dingding/suite 创建套件（需要先注册开发者账号和钉钉企业才能创建套件）
+###创建套件
+3.填写套件信息
+其中：
 
-## ISV Service API
-<http://open.dingtalk.com/#5-获取套件访问token（suite_access_token）>
+- Token:  可以随意填写，填写完之后，打开工程的isv/config.php文件，把Token的值复制给TOKEN
+- 数据加密密钥：点击自动生成，然后打开工程的isv/config.php文件，把值复制给给ENCODING_AES_KEY
+- 应用ID:把应用ID的值复制给APPID
+- IP白名单:  调用钉钉API的合法IP列表(例如，工程部署在ip地址为123.56.71.118的主机上，那就填写"123.56.71.118")
+- 回调URL:   url为`工程地址/receive.php`(例如，工程将部署在ip地址为123.56.71.118的主机上，端口为8080，那么我的回调URL即为：`http://123.56.71.118:8080/receive.php`，假如你有域名的话，也可以把IP地址换成域名)
 
-see isv.php
+4.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展）
 
-### FAQ
-* Q: {"message" : "权限校验失败", "errorCode" : 3}
-* A: Make sure getCurrentUrl() in Auth.php returns the correct url
-如果出现PHP Fatal error: Call to undefined function mcrypt_module_open()，就是没有安装mcrypt，记得检查是否安装mcrypt扩展
+5.将demo工程（isv）部署到服务器上
 
-部署：
-1.下载代码
-2.修改env.php里面的配置
-如果是做微应用，必填：CORPID，SECRET，其他的可不填写
-如果是做isv应用，必填：CORPID，SECRET，CREATE_SUITE_KEY，SUITE_KEY，SUITE_SECRET，TOKEN，ENCODING_AES_KEY
-其中CORPID，SECRET在微应用设置的地方即可获取
-CREATE_SUITE_KEY：自己设置
-SUITE_KEY，SUITE_SECRET，TOKEN，ENCODING_AES_KEY等在阿里云开发者平台注册企业并获取，具体请详细阅读开发者平台api文档
+6.部署成功之后，点击『创建套件』弹窗中的『验证有效性』。
 
-将项目部署在apache或者nginx下面即可访问
+  具体是如何验证回调URL有效性的，请查看(isv/receive.php)
+
+7.创建套件成功之后，将得到的SuiteKey和SuiteSecret填写到工程的config.php中。
+
+8.点击['测试企业和文档']，注册测试企业，注册完成后，点击『登录管理』到```oa.dingtalk.com```完成测试企业的激活
+
+9.测试企业激活完成后，进入套件『管理』，在页面底部选择要授权的测试企业进行授权
+
+10.修改微应用主页地址和PC主页地址
+
+  点击应用最右侧的`编辑`，编辑微应用信息，例如，工程部署在ip地址为123.56.71.118的主机上，端口为8080，那么微应用首页地址即为：`http://123.56.71.118:8080/index.php?corpid=$CORPID$`，PC版首页地址为：`http://123.56.71.118:8080/indexpc.php?corpid=$CORPID$`，点击保存。
+
+11.打开钉钉，进入对应企业，即可看到微应用，点击进入
+
+###创建企业应用
+1.进入`https://oa.dingtalk.com/#/microApp/microAppList`,点击『新建应用』
+
+2.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展）
+
+3.微应用主页地址填写。地址为`根目录/index.php`，(例如，工程部署在ip地址为123.56.71.118的主机上，端口为8080，那么微应用首页地址即为：`http://123.56.71.118:8080/index.php`，PC版首页地址为：`http://123.56.71.118:8080/indexpc.php`，假如你有域名的话，也可以把IP地址换成域名)
+  修改config.php中的CORPID，SECRET，AGENTID，其中CORPID，SECRET在微应用设置页面https://oa.dingtalk.com/#/microApp/microAppSet获取，AGENTID在创建微应用的时候可以获取
+
+4.微应用创建成功后，需要把微应用首页地址改为'根目录/index.php'
+
+5.打开钉钉，进入对应企业，即可看到微应用，点击进入
+
+
+###本DEMO具体实现
+
+1.URL回调流程
+
+请查看[文档](http://ddtalk.github.io/dingTalkDoc/#2-回调接口（分为五个回调类型）)
+
+2.jsapi权限验证配置流程
+
+请查看[文档](http://ddtalk.github.io/dingTalkDoc/#页面引入js文件)
+
+3.免登流程
+
+请查看[文档](http://ddtalk.github.io/dingTalkDoc/#手机客户端微应用中调用免登)
