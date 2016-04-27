@@ -25,7 +25,7 @@ ISV应用注册开发流程
 - IP白名单:  调用钉钉API的合法IP列表(例如，工程部署在ip地址为123.56.71.118的主机上，那就填写"123.56.71.118")
 - 回调URL:   url为`工程地址/receive.php`(例如，工程将部署在ip地址为123.56.71.118的主机上，端口为8080，那么我的回调URL即为：`http://123.56.71.118:8080/receive.php`，假如你有域名的话，也可以把IP地址换成域名)
 
-4.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展）
+4.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展），保证apache服务根目录与可写权限（存储json数据）
 
 5.将demo工程（isv）部署到服务器上
 
@@ -45,10 +45,12 @@ ISV应用注册开发流程
 
 11.打开钉钉，进入对应企业，即可看到微应用，点击进入
 
+注意：Ticket推送状态成功之后，再授权企业
+
 ###创建企业应用
 1.进入`https://oa.dingtalk.com/#/microApp/microAppList`,点击『新建应用』
 
-2.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展）
+2.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展）,保证apache服务根目录与可写权限（存储json数据）
 
 3.微应用主页地址填写。地址为`根目录/index.php`，(例如，工程部署在ip地址为123.56.71.118的主机上，端口为8080，那么微应用首页地址即为：`http://123.56.71.118:8080/index.php`，PC版首页地址为：`http://123.56.71.118:8080/indexpc.php`，假如你有域名的话，也可以把IP地址换成域名)
   修改config.php中的CORPID，SECRET，AGENTID，其中CORPID，SECRET在微应用设置页面`https://oa.dingtalk.com/#/microApp/microAppSet`获取，AGENTID在创建微应用的时候可以获取
