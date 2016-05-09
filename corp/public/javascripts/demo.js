@@ -71,15 +71,7 @@ dd.ready(function() {
             logger.e('requestAuthCode fail: ' + JSON.stringify(err));
         }
     });
-
-    dd.biz.user.get({
-        onSuccess: function (info) {
-            logger.e('userGet success: ' + JSON.stringify(info));
-        },
-        onFail: function (err) {
-            logger.e('userGet fail: ' + JSON.stringify(err));
-        }
-    });
+    
     $('.chooseonebtn').on('click', function() {
 
         dd.biz.chat.pickConversation({
