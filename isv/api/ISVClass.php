@@ -13,26 +13,25 @@ class ISVClass{
             Log::e("ERROR: suiteTicket not cached,please check the callback url");
             return false;
         }
-        $suiteAccessToken = Service::getSuiteAccessToken($suiteTicket);
+        $suiteAccessToken = ISVService::getSuiteAccessToken($suiteTicket);
         return $suiteAccessToken;
     }
 
     public static function getIsvCorpAccessToken($suiteAccessToken, $corpId, $permanetCode){
         $key = "dingdingActive_".$corpId;
-        $corpAccessToken = Service::getIsvCorpAccessToken($suiteAccessToken, $corpId, $permanetCode);
+        $corpAccessToken = ISVService::getIsvCorpAccessToken($suiteAccessToken, $corpId, $permanetCode);
         $status = Cache::getActiveStatus($key);
         if($status<=0&&$corpAccessToken!=""){
-            Log::i("[activeSuite]".$status);
-            Service::activeSuite($suiteAccessToken, $corpId, $permanetCode);
+            ISVService::activeSuite($suiteAccessToken, $corpId, $permanetCode);
         }
 
-        Service::getAuthInfo($suiteAccessToken, $corpId, $permanetCode);
+        ISVService::getAuthInfo($suiteAccessToken, $corpId, $permanetCode);
         return $corpAccessToken;
     }
 
     public static function getCorpInfo($corpId){
         $suiteAccessToken = ISVClass::getSuiteAccessToken();
-        $corpInfo = Service::getCorpInfoByCorId($corpId);
+        $corpInfo = ISVService::getCorpInfoByCorId($corpId);
         $corpAccessToken = ISVClass::getIsvCorpAccessToken($suiteAccessToken,$corpInfo['corp_id'],$corpInfo['permanent_code']);
         $corpInfo['corpAccessToken'] = $corpAccessToken;
 

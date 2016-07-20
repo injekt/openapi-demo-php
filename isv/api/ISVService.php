@@ -7,12 +7,12 @@ require_once(__DIR__ . "/../util/Cache.php");
 /**
  * ISV授权方法类
  */
-class Service
+class ISVService
 {
     public static function getSuiteAccessToken($suiteTicket)
     {
         $suiteAccessToken = Cache::getSuiteAccessToken();
-        if (!$suiteAccessToken)
+	    if (!$suiteAccessToken)
         {
             $response = Http::post("/service/get_suite_token",
                 null,
@@ -56,7 +56,7 @@ class Service
 
     public static function getPermanentCodeInfo($suiteAccessToken,$tmpAuthCode)
     {
-        $permanentCodeInfo = json_decode(Service::getCorpInfoByTmpCode($tmpAuthCode));
+        $permanentCodeInfo = json_decode(ISVService::getCorpInfoByTmpCode($tmpAuthCode));
 
         if (!$permanentCodeInfo)
         {
@@ -68,7 +68,6 @@ class Service
                     "tmp_auth_code" => $tmpAuthCode
                 )));
             self::check($permanentCodeResult);
-            Log::i("[permanentCodeInfo]".json_encode($permanentCodeResult));
             $permanentCodeInfo = self::savePermanentCodeInfo($permanentCodeResult,$tmpAuthCode);
         }
         return $permanentCodeInfo;
@@ -84,13 +83,23 @@ class Service
         if(!$corpInfo){
             $corpInfo = array();
         }
-        $corpInfo[] = $arr;
-        Cache::setCorpInfo(json_encode($corpInfo));
+
+        $corpExist = false;
+        foreach($corpInfo as $cp){
+            if($cp->corp_id == $arr['corp_id']){
+                $corpExist = true;
+            }
+        }
+
+        if(!$corpExist){
+            $corpInfo[] = $arr;
+            Cache::setCorpInfo(json_encode($corpInfo));
+        }
         return $arr;
     }
 
-    public static function getCurAgentId($appId){
-        $authInfo = json_decode(Cache::getAuthInfo());
+    public static function getCurAgentId($corpId,$appId){
+        $authInfo = json_decode(Cache::getAuthInfo("corpAuthInfo_".$corpId));
         $agents = $authInfo->agent;
         $agentId = 0;
         foreach($agents as $agent){
@@ -99,6 +108,7 @@ class Service
                 break;
             }
         }
+	Log::i("[AGENTID]".$corpId."-----".$appId."-----".$agentId);
         return $agentId;
     }
 
@@ -106,12 +116,12 @@ class Service
     {
         $key = "IsvCorpAccessToken_".$authCorpId;
         $corpAccessToken = Cache::getIsvCorpAccessToken($key);
-        if (!$corpAccessToken) 
+        if (!$corpAccessToken)
         {
-            $response = Http::post("/service/get_corp_token", 
+            $response = Http::post("/service/get_corp_token",
                 array(
                     "suite_access_token" => $suiteAccessToken
-                ), 
+                ),
                 json_encode(array(
                     "auth_corpid" => $authCorpId,
                     "permanent_code" => $permanentCode
@@ -123,39 +133,9 @@ class Service
         return $corpAccessToken;
     }
 
-    /**
-     * auth info:
-     * {
-     *  "auth_corp_info":
-     *  {
-     *      "corp_logo_url":"",
-     *      "corp_name":"MyHpmTest",
-     *      "corpid":"ding129a1bb2ec7f0bb4",
-     *      "invite_code":""
-     *  },
-     *  "auth_info":
-     *  {
-     *      "agent":
-     *      [
-     *          {
-     *              "agent_name":"phptest3",
-     *              "agentid":6678890,
-     *              "appid":495,
-     *              "logo_url":"http:\/\/i01.lw.aliimg.com\/media\/lADOAnnInMy0zLQ_180_180.jpg"
-     *          }
-     *      ]
-     *  },
-     *  "auth_user_info":
-     *  {
-     *      "userId":"manager8061"
-     *  },
-     *  "errcode":0,
-     *  "errmsg":"ok"
-     * }
-     */
     public static function getAuthInfo($suiteAccessToken, $authCorpId, $permanentCode)
     {
-        $authInfo = json_decode(Cache::getAuthInfo());
+        $authInfo = json_decode(Cache::getAuthInfo("corpAuthInfo_".$authCorpId));
         if (!$authInfo)
         {
             $authInfo = Http::post("/service/get_auth_info",
@@ -168,8 +148,7 @@ class Service
                     "permanent_code" => $permanentCode
                 )));
             self::check($authInfo);
-            $authInfo = $authInfo;
-            Cache::setAuthInfo(json_encode($authInfo->auth_info));
+            Cache::setAuthInfo("corpAuthInfo_".$authCorpId,json_encode($authInfo->auth_info));
         }
 
         return $authInfo;
@@ -205,11 +184,25 @@ class Service
                 "auth_corpid" => $authCorpId,
                 "permanent_code" => $permanentCode
             )));
+
         if($response->errcode==0){
             Cache::setActiveStatus($key);
         }
         self::check($response);
         return $response;
+    }
+
+    public static function removeCorpInfo($authCorpId){
+        $arr = array();
+        $key1 = "dingdingActive_".$authCorpId;
+        $key2 = "corpAuthInfo_".$authCorpId;
+        $key3 = "IsvCorpAccessToken_".$authCorpId;
+        $key4 = "js_ticket_".$authCorpId;
+        $arr[] = $key1;
+        $arr[] = $key2;
+        $arr[] = $key3;
+        $arr[] = $key4;
+        Cache::removeByKeyArr($arr);
     }
 
     static function check($res)

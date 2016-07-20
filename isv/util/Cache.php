@@ -14,16 +14,16 @@ class Cache
         return $memcache->get("suite_ticket");
     }
     
-    public static function setJsTicket($ticket)
+    public static function setJsTicket($key,$ticket)
     {
         $memcache = self::getMemcache();
-        $memcache->set("js_ticket", $ticket, 0, time() + 7000); // js ticket有效期为7200秒，这里设置为7000秒
+        $memcache->set($key, $ticket, 0, time() + 7000); // js ticket有效期为7200秒，这里设置为7000秒
     }
     
-    public static function getJsTicket()
+    public static function getJsTicket($key)
     {
         $memcache = self::getMemcache();
-        return $memcache->get("js_ticket");
+        return $memcache->get($key);
     }
     
     public static function setSuiteAccessToken($accessToken)
@@ -92,16 +92,23 @@ class Cache
     }
 
 
-    public static function setAuthInfo($authInfo){
+    public static function setAuthInfo($key,$authInfo){
         $memcache = self::getMemcache();
-        $memcache->set("auth_info",$authInfo);
+        $memcache->set($key,$authInfo);
     }
 
-    public static function getAuthInfo(){
+    public static function getAuthInfo($key){
         $memcache = self::getMemcache();
-        return $memcache->get("auth_info");
+        return $memcache->get($key);
     }
-    
+
+    public static function removeByKeyArr($arr){
+        $memcache = self::getMemcache();
+        foreach($arr as $a){
+            $memcache->set($a,'');
+        }
+    }
+
     private static function getMemcache()
     {
         /*if (class_exists("Memcache"))
@@ -150,41 +157,35 @@ class FileCache
 
     function setComm($key, $value)
     {
-        if($key&&$value){
+        if($key){
             $data = json_decode($this->get_file(DIR_ROOT ."filecache.php"),true);
-            $item = array();
-            $item["$key"] = $value;
-
-            /*$keyList = array('isv_corp_access_token','suite_access_token','js_ticket','corp_access_token');
-            if(in_array($key,$keyList)){
-                $item['expire_time'] = time() + 7000;
+            if(!$value){
+                unset($data["$key"]);
             }else{
+                $item = array();
+                $item["$key"] = $value;
                 $item['expire_time'] = 0;
+                $item['create_time'] = time();
+                $data["$key"] = $item;
             }
-            */
-            $item['expire_time'] = 0;
-            $item['create_time'] = time();
-            $data["$key"] = $item;
             $this->set_file("filecache.php",json_encode($data));
         }
     }
 
 	function setLimit($key, $value,$tag,$time)
 	{
-        if($key&&$value){
+        if($key){
             $data = json_decode($this->get_file(DIR_ROOT ."filecache.php"),true);
-            $item = array();
-            $item["$key"] = $value;
-
-            /*$keyList = array('isv_corp_access_token','suite_access_token','js_ticket','corp_access_token');
-            if(in_array($key,$keyList)){
-                $item['expire_time'] = time() + 7000;
+            if(!$value){
+                unset($data["$key"]);
             }else{
-                $item['expire_time'] = 0;
-            }*/
-            $item['expire_time'] = $time;
-            $item['create_time'] = time();
-            $data["$key"] = $item;
+                $item = array();
+                $item["$key"] = $value;
+                $item['expire_time'] = $time;
+                $item['create_time'] = time();
+                $data["$key"] = $item;
+            }
+
             $this->set_file("filecache.php",json_encode($data));
         }
 	}

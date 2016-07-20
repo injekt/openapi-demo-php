@@ -10,16 +10,17 @@ class Auth
      /**
       * 缓存jsTicket。jsTicket有效期为两小时，需要在失效前请求新的jsTicket（注意：以下代码没有在失效前刷新缓存的jsTicket）。
       */
-    public static function getTicket($accessToken)
+    public static function getTicket($corpId,$accessToken)
     {
-        $jsticket = Cache::getJsTicket('js_ticket');
+        $jsticket = Cache::getJsTicket('js_ticket_'.$corpId);
         if (!$jsticket)
         {
             $response = Http::get('/get_jsapi_ticket', array('type' => 'jsapi', 'access_token' => $accessToken));
             self::check($response);
             $jsticket = $response->ticket;
-            Cache::setJsTicket($jsticket);
+            Cache::setJsTicket('js_ticket_'.$corpId,$jsticket);
         }
+
         return $jsticket;
     }
 
@@ -48,13 +49,12 @@ class Auth
     public static function isvConfig($corpId)
     {
         $corpInfo = ISVClass::getCorpInfo($corpId);
-	    Log::i("[corpinfo-->]".json_encode($corpInfo));
-        $agentId = Service::getCurAgentId(APPID);
         $corpId = $corpInfo['corp_id'];
+        $agentId = ISVService::getCurAgentId($corpId,APPID);
         $nonceStr = 'abcdefg';
         $timeStamp = time();
         $url = self::curPageURL();
-        $ticket = self::getTicket($corpInfo['corpAccessToken']);
+        $ticket = self::getTicket($corpId,$corpInfo['corpAccessToken']);
         $signature = self::sign($ticket, $nonceStr, $timeStamp, $url);
         $arr = array();
         $arr['ticket'] = $ticket;
@@ -69,6 +69,7 @@ class Auth
             'agentId' => $agentId,
             'timeStamp' => $timeStamp,
             'corpId' => $corpId,
+            'suite_key' => SUITE_KEY,
             'signature' => $signature);
         return json_encode($config, JSON_UNESCAPED_SLASHES);
     }
@@ -81,6 +82,19 @@ class Auth
             '&url=' . $url;
         return sha1($plain);
     }
+
+    /**
+     * @param $accessToken
+     * @param $code
+     * @return 个人授权信息
+     */
+    public static function getPerson($accessToken, $code)
+    {
+        $response = Http::get("/user/get_private_info",
+            array("access_token" => $accessToken, "tmp_auth_code" => $code));
+        return json_encode($response);
+    }
+
     
     static function check($res)
     {

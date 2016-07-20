@@ -9,7 +9,6 @@ require_once(__DIR__ . "/crypto/DingtalkCrypt.php");
 $signature = $_GET["signature"];
 $timeStamp = $_GET["timestamp"];
 $nonce = $_GET["nonce"];
-
 $postdata = file_get_contents("php://input");
 $postList = json_decode($postdata,true);
 $encrypt = $postList['encrypt'];
@@ -81,7 +80,6 @@ else
     else if ("tmp_auth_code" === $eventType)
     {
         $tmpAuthCode = $eventMsg->AuthCode;
-        error_log("tmpAuthCode:".$tmpAuthCode);
         Activate::autoActivateSuite($tmpAuthCode);
     }
     /**
@@ -116,11 +114,18 @@ else
         Log::e(json_encode($_GET) . "  ERR:user_leave_org");
         //handle auth change event
     }
-
-    else if ("change_auth" === $eventType)
+    /**
+     * 应用被解除授权的时候，需要删除相应企业的存储信息
+     */
+    else if ("suite_relieve" === $eventType)
     {
+        $corpid = $eventMsg->AuthCorpId;
+        ISVService::removeCorpInfo($corpid);
         //handle auth change event
-    }
+    }else if ("change_auth" === $eventType)
+     {
+         //handle auth change event
+     }
 
     /**
      * 回调地址更新
