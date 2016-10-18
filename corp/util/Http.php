@@ -43,19 +43,7 @@ Class Http
     private static function joinParams($path, $params)
     {
         $url = OAPI_HOST . $path;
-        if (count($params) > 0)
-        {
-            $url = $url . "?";
-            foreach ($params as $key => $value)
-            {
-                $url = $url . $key . "=" . $value . "&";
-            }
-            $length = count($url);
-            if ($url[$length - 1] == '&')
-            {
-                $url = substr($url, 0, $length - 1);
-            }
-        }
+        (count($params) > 0) && ($url = sprintf("%s?%s", $url, http_build_query($params)));
         return $url;
     }
 }
