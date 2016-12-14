@@ -1,5 +1,6 @@
-ISV应用和企业应用php demo
 
+ISV应用和企业应用php demo
+   注意！注意！注意！demo中的数据库存储一定要修改为mysql等持久化存储。
 目录结构：
 
 
