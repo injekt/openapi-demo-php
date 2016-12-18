@@ -50,7 +50,8 @@ Class Http
             {
                 $url = $url . $key . "=" . $value . "&";
             }
-            $length = count($url);
+            //$length = count($url);   $url 是字符串 应该用setrlen获取字符串长度
+            $length = strlen($url);
             if ($url[$length - 1] == '&')
             {
                 $url = substr($url, 0, $length - 1);
