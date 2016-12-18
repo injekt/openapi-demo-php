@@ -130,7 +130,7 @@ class FileCache
             }
             $item['create_time'] = time();
             $data["$key"] = $item;
-            $this->set_file("filecache.php",json_encode($data));
+            $this->set_file(DIR_ROOT ."filecache.php",json_encode($data));
         }
 	}
 
