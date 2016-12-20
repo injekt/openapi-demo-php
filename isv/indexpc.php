@@ -12,7 +12,7 @@ $corpId =  $_GET['corpid'];
     <link rel="stylesheet" href="http://g.alicdn.com/ilw/ding/0.2.3/styles/main.css?v=262192719_110744" type="text/css"/>
     <script type="text/javascript">var _config = <?php echo Auth::isvConfig($corpId);?></script>
     <script type="text/javascript" src="/public/javascripts/zepto.min.js"></script>
-    <script type="text/javascript" src="http://g.alicdn.com/dingding/dingtalk-pc-api/2.3.1/index.js"></script>
+    <script type="text/javascript" src="//g.alicdn.com/dingding/dingtalk-pc-api/2.5.0/index.js"></script>
 </head>
 <body>
 <button class="btn btn-block btn-default chooseonebtn">给朋友发ding</button>
