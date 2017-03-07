@@ -11,7 +11,7 @@ class DingtalkCrypt
 	private $m_suiteKey;
 
 	
-	public function DingtalkCrypt($token, $encodingAesKey, $suiteKey)
+	public function __construct($token, $encodingAesKey, $suiteKey)
 	{
 		$this->m_token = $token;
 		$this->m_encodingAesKey = $encodingAesKey;
