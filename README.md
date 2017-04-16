@@ -14,9 +14,9 @@ corp目录：企业应用php demo
 ## Getting Started
 
 ISV应用注册开发流程
-###创建套件前
+### 创建套件前
 登录到 http://console.d.aliyun.com/#/dingding/suite 创建套件（需要先注册开发者账号和钉钉企业才能创建套件）
-###创建套件
+### 创建套件
 3.填写套件信息
 其中：
 
@@ -48,7 +48,7 @@ ISV应用注册开发流程
 
 注意：Ticket推送状态成功之后，再授权企业
 
-###创建企业应用
+### 创建企业应用
 1.进入`https://oa.dingtalk.com/#/microApp/microAppList`,点击『新建应用』
 
 2.配置PHP服务器环境（php+apache/nginx），安装mcrypt扩展（注意，一定要安装mcrypt扩展）,保证apache服务根目录与可写权限（存储json数据）
@@ -61,7 +61,7 @@ ISV应用注册开发流程
 5.打开钉钉，进入对应企业，即可看到微应用，点击进入
 
 
-###本DEMO具体实现
+### 本DEMO具体实现
 
 1.URL回调流程
 
