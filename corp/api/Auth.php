@@ -48,7 +48,7 @@ class Auth
         }
         $pageURL .= "://";
 
-        if ($_SERVER["SERVER_PORT"] != "80")
+        if ($_SERVER["SERVER_PORT"] != "80" && ($pageURL == "https://" && $_SERVER["SERVER_PORT"] != "443"))
         {
             $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
         }
