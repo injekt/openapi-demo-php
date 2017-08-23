@@ -25,7 +25,7 @@ class Auth
     }
 
 
-    function curPageURL()
+    public static function curPageURL()
     {
         $pageURL = 'http';
 
@@ -46,14 +46,17 @@ class Auth
         return $pageURL;
     }
 
-    public static function isvConfig($corpId)
+    public static function isvConfig($corpId,$url=null)
     {
         $corpInfo = ISVClass::getCorpInfo($corpId);
         $corpId = $corpInfo['corp_id'];
         $agentId = ISVService::getCurAgentId($corpId,APPID);
         $nonceStr = 'abcdefg';
         $timeStamp = time();
-        $url = self::curPageURL();
+        if ($url==null)
+        {
+            $url = self::curPageURL();
+        }
         $ticket = self::getTicket($corpId,$corpInfo['corpAccessToken']);
         $signature = self::sign($ticket, $nonceStr, $timeStamp, $url);
         $arr = array();
@@ -95,7 +98,7 @@ class Auth
         return json_encode($response);
     }
 
-    
+
     static function check($res)
     {
         if ($res->errcode != 0)
